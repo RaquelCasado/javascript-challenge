@@ -1,9 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Vortexa",
+  "name": "Vortexa challenge",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "logo01.jpeg",
       "sizes": "192x192",
       "type": "image/png"
     }
