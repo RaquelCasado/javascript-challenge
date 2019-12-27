@@ -1,18 +1,32 @@
 import React from "react";
 import {Header} from "../header";
 import {Map} from "../map";
-import {Graphs} from "../graphs";
+import {fetchRampsStarted, fetchTotalRampsPerMaterialStarted, fetchTotalRampsPerSizeStarted} from "../../actions/ramps";
+import {connect} from "react-redux";
+import {SideScreen} from "../sideScreen";
 
-export class Home extends React.Component {
+class HomeScreen extends React.Component {
+    componentWillMount() {
+        this.props.dispatchFetchRamps();
+    }
+
     render() {
         return (
-            <div>
-               <Header/>
-                <div style={{display: 'flex', flex: 1, flexDirection: 'row'}}>
+            <div style={{backgroundColor: '#2c303b'}}>
+                <Header/>
+                <div style={{display: 'flex', flex: 1, flexDirection: 'row', height: '95vh'}}>
                     <Map style={{flexGrow: 4}}/>
-                    <Graphs style={{flexGrow: 1}}/>
+                    <SideScreen style={{flexGrow: 1}}/>
                 </div>
             </div>
         );
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatchFetchRamps: () => dispatch(fetchRampsStarted()),
+    }
+};
+
+export const Home = connect(null, mapDispatchToProps)(HomeScreen);

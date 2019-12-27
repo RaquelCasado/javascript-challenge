@@ -1,24 +1,86 @@
 import React from "react";
-import {RadialChart} from "react-vis/es";
+import {connect} from "react-redux";
+import {PieChart} from "../../components/graphs/pieChart";
+import {
+    chooseForDetail,
+    clearDetail,
+    fetchTotalRampsPerMaterialStarted,
+    fetchTotalRampsPerSizeStarted
+} from "../../actions/ramps";
 
-export class Graphs extends React.Component {
-    
+
+class GraphsScreen extends React.Component {
+    state ={
+        coord: {}
+    };
+
+    componentWillMount() {
+        this.props.dispatchFetchTotalRampsPerMaterial();
+        this.props.dispatchFetchTotalRampsPerSize();
+    }
+
+    componentDidUpdate() {
+        const {coord} = this.props;
+        if(this.state.coord !== coord){
+            this.setState({coord});
+            this.props.dispatchFetchTotalRampsPerMaterial(coord);
+            this.props.dispatchFetchTotalRampsPerSize(coord);
+        }
+    }
+
+    getDataForGraph2 = (rawData) => {
+        const data = [];
+        for (const prop in rawData) {
+            if (rawData.hasOwnProperty(prop)) {
+                const property = rawData[prop][0];
+                const rampsNumber = rawData[prop][1];
+                data.push({id: property, label: property, value: rampsNumber});
+            }
+        }
+        return data;
+    };
+
+    handleChartClick = (prop, data) => {
+        this.props.dispatchChoseForDetails(prop, data.label);
+    };
+
     render() {
         return (
-            <div style={{height: '100vh', width: '35vw', backgroundColor: '#2c303b', padding: 50, textAlign: 'center', alignItems: 'center'}}>
-                <h4 style={{color: 'white'}}>Ramps Per Construction Material</h4>
-                <RadialChart
-                    animation={{damping: 9, stiffness: 300}}
-                    data={[{angle: 1}, {angle: 5}, {angle: 2}]}
-                    width={350}
-                    height={350}
-                    style={{margin:'auto', display: 'block'}}/>
-                <h4 style={{color: 'white'}}>Ramps Per Size Category</h4>
-                <RadialChart
-                    data={[{angle: 1}, {angle: 5}, {angle: 2}]}
-                    width={350}
-                    height={350} />
+            <div style={{padding: 20, backgroundColor: '#2c303b', textAlign: 'center'}}>
+                <button onClick={() => this.props.dispatchClearDetails()}>Clear filters</button>
+                <div style={{textAlign: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingBottom:30}}>
+                    <div style={{width: '20vh', height: '21vh'}}>
+                        <PieChart
+                            data={this.getDataForGraph2(this.props.totalRampsPerMaterial)}
+                            onClick={(data) => this.handleChartClick('Material', data)}/>
+                        <a style={{color: '#d1d6e3'}}>Ramps Per Construction Material</a>
+                    </div>
+                    <div style={{width: '20vh', height: '21vh'}}>
+                        <PieChart
+                            data={this.getDataForGraph2(this.props.totalRampsPerSize)}
+                            onClick={(data) => this.handleChartClick('Size', data)}/>
+                        <a style={{color: '#d1d6e3'}}>Ramps Per Size Category</a>
+                    </div>
+                </div>
             </div>
         );
     }
 }
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        dispatchFetchTotalRampsPerMaterial: (coord) => dispatch(fetchTotalRampsPerMaterialStarted(coord)),
+        dispatchFetchTotalRampsPerSize: (coord) => dispatch(fetchTotalRampsPerSizeStarted(coord)),
+        dispatchChoseForDetails: (prop, type) => dispatch(chooseForDetail(prop, type)),
+        dispatchClearDetails: () => dispatch(clearDetail())
+    }
+};
+
+const mapStateToProps = state => ({
+    totalRampsPerMaterial: state.totalRampsPerConstructionMaterial.result.body,
+    totalRampsPerSize: state.totalRampsPerSize.result.body,
+    coord: state.detailedRamps.coord
+});
+
+export const Graphs = connect(mapStateToProps, mapDispatchToProps)(GraphsScreen);
