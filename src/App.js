@@ -1,7 +1,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import Routes from './router';
-import getStore from "./store";
+import getStore from "./store/store";
 
 const store = getStore();
 
