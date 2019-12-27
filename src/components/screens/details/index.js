@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {filterRampsByProp} from "../../utils";
+import {filterRampsByProp} from "../../../utils/rampsUtils";
 
 class DetailsScreen extends React.Component{
     renderEmptyScreen = () => {

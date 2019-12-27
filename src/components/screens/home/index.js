@@ -1,7 +1,7 @@
 import React from "react";
 import {Header} from "../header";
 import {Map} from "../map";
-import {fetchRampsStarted, fetchTotalRampsPerMaterialStarted, fetchTotalRampsPerSizeStarted} from "../../actions/ramps";
+import {fetchRampsStarted} from "../../../actions/totalRampsActions";
 import {connect} from "react-redux";
 import {SideScreen} from "../sideScreen";
 

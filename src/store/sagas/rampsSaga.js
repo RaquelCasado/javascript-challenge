@@ -7,9 +7,12 @@ import {
 import {
     fetchRampsFailed,
     fetchRampsSucceeded,
+} from "../../actions/totalRampsActions";
+import {
     fetchTotalRampsPerMaterialFailed,
-    fetchTotalRampsPerMaterialSucceeded, fetchTotalRampsPerSizeFailed, fetchTotalRampsPerSizeSucceeded
-} from "../../actions/ramps";
+    fetchTotalRampsPerMaterialSucceeded
+} from "../../actions/totalRampsPerConstructionMaterialActions";
+import {fetchTotalRampsPerSizeFailed, fetchTotalRampsPerSizeSucceeded} from "../../actions/totalRampsPerSizeActions.";
 
 function* rampWorker() {
     try {
@@ -18,8 +21,7 @@ function* rampWorker() {
          if(responseBody){
              yield put(fetchRampsSucceeded(responseBody))
          }else{
-             yield put(fetchRampsSucceeded({body: []}))
-             // yield put(fetchRampsFailed(error.message));
+
          }
 
     } catch (e) {

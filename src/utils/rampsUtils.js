@@ -55,3 +55,12 @@ function filterByCoord(ramps, coord){
     }
     return filteredRamps;
 }
+
+export function getCoordinates(ramp){
+    const newPaths = [];
+    const paths = ramp.geometry.coordinates[0][0];
+    paths.map((path) => {
+        newPaths.push({lat: path[1], lng:path[0]})
+    });
+    return newPaths
+};

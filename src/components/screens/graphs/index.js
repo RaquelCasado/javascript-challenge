@@ -1,12 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
-import {PieChart} from "../../components/graphs/pieChart";
-import {
-    chooseForDetail,
-    clearDetail,
-    fetchTotalRampsPerMaterialStarted,
-    fetchTotalRampsPerSizeStarted
-} from "../../actions/ramps";
+import {PieChart} from "../../graphs/pieChart";
+import {fetchTotalRampsPerMaterialStarted} from "../../../actions/totalRampsPerConstructionMaterialActions";
+import {fetchTotalRampsPerSizeStarted} from "../../../actions/totalRampsPerSizeActions.";
+import {chooseForDetail, clearDetail} from "../../../actions/detailedRampsActions";
 
 
 class GraphsScreen extends React.Component {
@@ -28,7 +25,7 @@ class GraphsScreen extends React.Component {
         }
     }
 
-    getDataForGraph2 = (rawData) => {
+    getDataForGraph = (rawData) => {
         const data = [];
         for (const prop in rawData) {
             if (rawData.hasOwnProperty(prop)) {
@@ -51,13 +48,13 @@ class GraphsScreen extends React.Component {
                 <div style={{textAlign: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingBottom:30}}>
                     <div style={{width: '20vh', height: '21vh'}}>
                         <PieChart
-                            data={this.getDataForGraph2(this.props.totalRampsPerMaterial)}
+                            data={this.getDataForGraph(this.props.totalRampsPerMaterial)}
                             onClick={(data) => this.handleChartClick('Material', data)}/>
                         <a style={{color: '#d1d6e3'}}>Ramps Per Construction Material</a>
                     </div>
                     <div style={{width: '20vh', height: '21vh'}}>
                         <PieChart
-                            data={this.getDataForGraph2(this.props.totalRampsPerSize)}
+                            data={this.getDataForGraph(this.props.totalRampsPerSize)}
                             onClick={(data) => this.handleChartClick('Size', data)}/>
                         <a style={{color: '#d1d6e3'}}>Ramps Per Size Category</a>
                     </div>

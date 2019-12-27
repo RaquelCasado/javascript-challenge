@@ -2,8 +2,8 @@ import React from "react";
 import {Component} from 'react';
 import {GoogleMap, withScriptjs, withGoogleMap, Marker} from "react-google-maps";
 import {connect} from "react-redux";
-import {filterRampsByProp} from "../../utils";
-import {idleMap} from "../../actions/ramps";
+import {filterRampsByProp, getCoordinates} from "../../../utils/rampsUtils";
+import {idleMap} from "../../../actions/detailedRampsActions";
 
 class MapScreen extends Component {
     state = {
@@ -47,22 +47,13 @@ class MapScreen extends Component {
             {this.state.ramps ? this.state.ramps.map((ramp) => {
                 return (
                     <div>
-                        <Marker key={ramp.id} position={this.getCoordinates(ramp)[0]}/>
+                        <Marker key={ramp.id} position={getCoordinates(ramp)[0]}/>
                     </div>)
             }): null}
         </GoogleMap>
     );
 
      WrappedMap = withScriptjs(withGoogleMap(this.map));
-
-    getCoordinates = (ramp) => {
-        const newPaths = [];
-        const paths = ramp.geometry.coordinates[0][0];
-        paths.map((path) => {
-            newPaths.push({lat: path[1], lng:path[0]})
-        });
-        return newPaths
-    };
 
     render() {
         return (
