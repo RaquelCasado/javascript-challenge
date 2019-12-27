@@ -1,7 +1,7 @@
 import React from "react";
 import {Graphs} from "../graphs";
 import {Details} from "../details";
-import {SideBarDivider} from "../../components/dividers/sideBarDivider";
+import {SideBarDivider} from "../../dividers/sideBarDivider";
 
 export class SideScreen extends React.Component {
     render(){
